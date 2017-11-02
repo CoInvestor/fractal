@@ -1,6 +1,6 @@
 {
-    "name": "league/fractal",
-    "description": "Handle the output of complex data structures ready for API output.",
+    "name": "coinvestor/fractal",
+    "description": "Fork of thephpleague fractal with additional fixes merged",
     "keywords": [
         "league",
         "api",
