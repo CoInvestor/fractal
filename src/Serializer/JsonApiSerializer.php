@@ -584,8 +584,8 @@ class JsonApiSerializer extends ArraySerializer
             $includeId = $object['id'];
             $cacheKey = "$includeType:$includeId";
             if (!array_key_exists($cacheKey, $linkedIds)) {
-                $serializedData[] = &$object;
-                $linkedIds[$cacheKey] = &$object;
+                $serializedData[] = $object;
+                $linkedIds[$cacheKey] = $object;
             } else {
                 // Merge any missing relationships that may have been requested from alternative instances of this include
                 if (array_key_exists($cacheKey, $linkedIds) && isset($object['relationships'])) {
@@ -596,8 +596,12 @@ class JsonApiSerializer extends ArraySerializer
    
                     if (array_diff_key($object['relationships'], $linkedIds[$cacheKey]['relationships'])) {
                         $object['relationships'] = array_merge($object['relationships'], $linkedIds[$cacheKey]['relationships']); 
-                        // Update via map
-                        $linkedIds[$cacheKey] = $object;
+                        foreach ($serializedData as $index => $data) {
+                            if ($data['id'] === $object['id'] && $data['type'] === $object['type']) {
+                                $serializedData[$index] =  $object;
+                                break;
+                            }
+                        }
                     }
                 }
             }
